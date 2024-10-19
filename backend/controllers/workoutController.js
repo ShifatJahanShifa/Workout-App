@@ -28,6 +28,24 @@ const singleWorkout = async(req,res)=>{
 const postWorkout=async(req,res)=>{
     const {title,reps,load}=req.body
 
+    let emptyFields =[]
+    if(!title) 
+    {
+        emptyFields.push('title')
+    }
+    if(!load) 
+    {
+        emptyFields.push('load')
+    }
+    if(!reps) 
+    {
+        emptyFields.push('reps')
+    }
+    // if(emptyFields.length>0)
+    // {
+    //     return res.status(400).json({error: error.message, emptyFields})
+    // }
+
     // add doc to db
     try{
         const workout=await workoutdata.create({title,reps,load})
@@ -35,7 +53,8 @@ const postWorkout=async(req,res)=>{
     }
     catch(error)
     {
-        res.status(400).json({error: error.msg})
+        console.log(error.msg)
+        res.status(400).json({error: error.message, emptyFields})
     }
 }
 
